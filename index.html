@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="suggest" id="search-suggest" style="display:none">
-        <ul>
+        <ul id="search-result">
             <li>搜索1</li>
             <li>搜索2</li>
         </ul>
@@ -40,18 +40,33 @@
     <script>
         $(document).ready(function() {
             $('#search_input').bind('keyup', function () {
-                $('#search-suggest').show().css({
-                    top: $('#search-form').offset().top + $('#search-form').outerHeight(),
-                    left: $('#search-form').offset().left,
-                    position: 'absolute'
+                var searchText = $('#search_input').val();
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://api.bing.com/qsonhs.aspx?type=cb&cb=a&q=' + $(this).val(),
+                    dataType: 'jsonp',
+                    jsonp: 'cb',
+                    success: function (msg) {
+                        var ons = msg.AS.Results[0].Suggests;
+                        html = '';
+                        for (var i = 0; i < ons.length; i++) {
+                            html += '<li><a target="_blank" href=' + ons[i].Url + '>' + ons[i].Txt + '</a></li>';
+                        }
+                        $('#search-result').html(html);
+                        $('#search-suggest').show().css({
+                            top: $('#search-form').offset().top + $('#search-form').outerHeight(),
+                            left: $('#search-form').offset().left,
+                            position: 'absolute'
+                        });
+                    },
+                    error: function (jqXHR) {
+                        alert('错误：' + jqXHR.status)
+                    }
                 })
             })
+           
         })
     </script>
-
-
-
-
 
 </body>
 </html>
