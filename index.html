@@ -12,6 +12,11 @@
         .search-input-text{border: 0px;float: left;height: 25px;line-height: 25px;outline: none;width:350px}
         .search-input-submit{border: 0px;background-image: url("images/search-button.png");width: 29px;height: 29px;float:left;}
         .search-box{position: absolute;top:270px;left:370px}
+        .suggest{width:388px;background-color: #fff;border: 1px solid #999}
+        .suggest ul{list-style: none;margin: 0;padding: 0;}
+        .suggest ul li{padding: 3px;font-size: 14px;line-height: 25px;cursor:pointer}
+        .suggest ul li:hover{text-decoration: underline;background-color: #e5e5e5}
+
     </style>
 </head>
 
@@ -19,11 +24,34 @@
     <div class="bg-div">
         <div class="search-box">
         <div class="logo"></div>
-        <form>
-            <input type="text" class="search-input-text"/>
+        <form class="search-form" action="https://cn.bing.com/search" target="_blank"  id="search-form">
+            <input type="text" class="search-input-text" name="q" id="search_input" autocomplete="off"/>
             <input type="submit" class="search-input-submit" value=""/>
         </form>
         </div>
     </div>
+    <div class="suggest" id="search-suggest" style="display:none">
+        <ul>
+            <li>搜索1</li>
+            <li>搜索2</li>
+        </ul>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#search_input').bind('keyup', function () {
+                $('#search-suggest').show().css({
+                    top: $('#search-form').offset().top + $('#search-form').outerHeight(),
+                    left: $('#search-form').offset().left,
+                    position: 'absolute'
+                })
+            })
+        })
+    </script>
+
+
+
+
+
 </body>
 </html>
